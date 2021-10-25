@@ -1,0 +1,6 @@
+# Unnecessary VSCode files
+.vscode
+.DS_Store
+
+# Configuration Files
+.env
