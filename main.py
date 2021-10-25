@@ -7,21 +7,20 @@ import requests
 from bs4 import BeautifulSoup
 from decouple import config
 
-now = datetime.datetime.now()
+now = datetime.datetime.now()  # To generate unique subjects for email
 
 
 def extract_news(url):
+    '''
+    Extracts news headlines from url given
+    '''
     print('Extracting Hacker News Stories...')
-    body = ''
+    body = '' # Message Body
     body += ('<b>HN Top Stories:<b>\n' + '<br>' + '-' * 50 + '<br>')
     response = requests.get(url)
     content = response.content
     soup = BeautifulSoup(content, 'html.parser')
-    for i, tag in enumerate(
-            soup.find_all('td', attrs={
-                'class': 'title',
-                'valign': ''
-            })):
+    for i, tag in enumerate(soup.find_all('td', attrs={'class': 'title','valign': ''})):
         body += ((str(i + 1) + ' :: ' + tag.text + '\n' +
                   '<br>') if tag.text != 'More' else '')
     return body
@@ -32,6 +31,7 @@ content+=('<br><br>End of Message')
 
 print('Composing Email')
 
+# Configuring email server setup
 SERVER='smtp.gmail.com'
 PORT=587
 FROM=config('EMAIL')
